@@ -1,0 +1,106 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background-color: #f2f2f2;
+  }
+  
+  nav {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .nav-links a {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  .container {
+    padding: 20px;
+  }
+  
+  .menu-grid, .bill-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  
+  .menu-item, .bill-item {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+    padding-bottom: 10px;
+  }
+  
+  .menu-item img, .bill-item img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+  }
+  
+  .details {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  button:hover {
+    background-color: #e60000;
+  }
+  
+  .remove-btn {
+    background-color: #999;
+    margin-top: 10px;
+  }
+  
+  .quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0;
+  }
+  
+  .total-section {
+    margin-top: 30px;
+    text-align: right;
+    padding-right: 20px;
+  }
+  
+  #toast {
+    visibility: hidden;
+    min-width: 200px;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    padding: 12px;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.5s ease, visibility 0.5s;
+  }
+  
+  #toast.show {
+    visibility: visible;
+    opacity: 1;
+  }
+  

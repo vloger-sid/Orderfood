@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Bill</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .feedback-form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .feedback-form h2 {
+      margin-bottom: 10px;
+    }
+
+    .feedback-form input,
+    .feedback-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+
+    .feedback-form button {
+      background-color: #28a745;
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .feedback-form button:hover {
+      background-color: #218838;
+    }
+
+    .thank-you {
+      margin-top: 20px;
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <h2>Food Order App</h2>
+    <div class="nav-links">
+      <a href="order.html">Order</a>
+      <a href="bill.html">View Bill</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Your Bill Summary</h1>
+    <div id="billItems" class="bill-grid"></div>
+    <div class="total-section">
+      <h2 id="totalPrice">Total: ₹0</h2>
+    </div>
+
+    <!-- Feedback Form -->
+    <div class="feedback-form">
+      <h2>We'd love your feedback! 📝</h2>
+      <form id="feedbackForm">
+        <label for="name">Your Name:</label>
+        <input type="text" id="name" required placeholder="Enter your name">
+
+        <label for="message">Your Feedback:</label>
+        <textarea id="message" rows="4" required placeholder="Share your experience..."></textarea>
+
+        <button type="submit">Submit Feedback</button>
+      </form>
+      <p class="thank-you" id="thankYouMsg" style="display: none;">Thank you for your feedback! 😊</p>
+    </div>
+  </div>
+
+  <script>
+    function loadCart() {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const billContainer = document.getElementById('billItems');
+      billContainer.innerHTML = '';
+      let total = 0;
+
+      if (cart.length === 0) {
+        billContainer.innerHTML = "<p>Your cart is empty. Go add some food!</p>";
+        document.getElementById('totalPrice').innerText = `Total: ₹0`;
+        return;
+      }
+
+      cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+
+        const div = document.createElement('div');
+        div.className = 'bill-item';
+        div.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <div class="details">
+            <h3>${item.name}</h3>
+            <p>Unit Price: ₹${item.price}</p>
+            <div class="quantity-controls">
+              <button onclick="updateQuantity(${index}, -1)">-</button>
+              <span>${item.quantity}</span>
+              <button onclick="updateQuantity(${index}, 1)">+</button>
+            </div>
+            <p><strong>Subtotal: ₹${itemTotal}</strong></p>
+            <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+          </div>
+        `;
+        billContainer.appendChild(div);
+      });
+
+      document.getElementById('totalPrice').innerText = `Total: ₹${total}`;
+    }
+
+    function updateQuantity(index, change) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart[index].quantity += change;
+      if (cart[index].quantity <= 0) {
+        cart.splice(index, 1);
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      loadCart();
+    }
+
+    function removeItem(index) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      loadCart();
+    }
+
+    // Feedback Form Submission
+    document.getElementById("feedbackForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      document.getElementById("thankYouMsg").style.display = "block";
+      document.getElementById("feedbackForm").reset();
+    });
+
+    loadCart();
+  </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Food</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav>
+    <h2>Food Order App</h2>
+    <div class="nav-links">
+      <a href="order.html">Order</a>
+      <a href="bill.html">View Bill</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Menu</h1>
+    <div id="menuItems" class="menu-grid"></div>
+  </div>
+
+  <div id="toast">Item added to cart!</div>
+
+  <script>
+    const menu = [
+      { name: "Cheese Pizza", price: 250, image: "https://www.inspiredtaste.net/wp-content/uploads/2023/08/Cheese-Pizza-2-1200.jpg" },
+      { name: "Veg Burger", price: 150, image: "https://images.slurrp.com/prod/recipe_images/transcribe/snack/Vegetable-Burger.webp" },
+      { name: "Pasta Alfredo", price: 200, image: "https://midwestfoodieblog.com/wp-content/uploads/2023/07/chicken-alfredo-1.jpg" },
+      { name: "Chicken Biryani", price: 300, image: "https://assets.cntraveller.in/photos/6218cfdf6774879c067d3ece/1:1/w_1079,h_1079,c_limit/best%20biryani%20in%20pune%20lead.jpg" },
+      { name: "Cold Coffee", price: 100, image: "https://mytastycurry.com/wp-content/uploads/2020/04/Cafe-style-cold-coffee-with-icecream.jpg" },
+      { name: "Chocolate Cake", price: 180, image: "https://static1.squarespace.com/static/62ec1fc995263d65f21175de/62ec20c6bdb5894fe42c99cc/63c5cd817ee0dc382146c147/1739203779354/germanchocolate17.jpg?format=1500w" }
+    ];
+
+    const menuContainer = document.getElementById('menuItems');
+
+    menu.forEach((item, index) => {
+      const div = document.createElement('div');
+      div.className = 'menu-item';
+      div.innerHTML = `
+        <img src="${item.image}" alt="${item.name}">
+        <h3>${item.name}</h3>
+        <p>₹${item.price}</p>
+        <button onclick="addToCart(${index})">Add to Cart</button>
+      `;
+      menuContainer.appendChild(div);
+    });
+
+    function addToCart(index) {
+      const selectedItem = menu[index];
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+      const existingItem = cart.find(item => item.name === selectedItem.name);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({ ...selectedItem, quantity: 1 });
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+      showToast();
+    }
+
+    function showToast() {
+      const toast = document.getElementById('toast');
+      toast.className = 'show';
+      setTimeout(() => {
+        toast.className = toast.className.replace('show', '');
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
